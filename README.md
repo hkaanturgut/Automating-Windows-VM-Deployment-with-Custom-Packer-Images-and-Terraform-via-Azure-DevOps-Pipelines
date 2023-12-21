@@ -1,8 +1,11 @@
 # Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines
 
-- Welcome to this comprehensive guide on automating the creation of Windows VMs with Custom (Golden) Images through Packer and Terraform, orchestrated by Azure DevOps CI/CD Pipelines. This README provides step-by-step instructions, ensuring a seamless and efficient deployment process for all five applications.
+Welcome to this comprehensive guide on automating the creation of Windows VMs with Custom (Golden) Images through Packer and Terraform, orchestrated by Azure DevOps CI/CD Pipelines. This README provides step-by-step instructions, ensuring a seamless and efficient deployment process for all five applications.
 
-Let's begin!
+
+  ![Packer Image Automation Diagram](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/ed6e6652-9749-468e-9df6-ce6ecd2b08aa)
+
+
 
 # Let's get started!
 
