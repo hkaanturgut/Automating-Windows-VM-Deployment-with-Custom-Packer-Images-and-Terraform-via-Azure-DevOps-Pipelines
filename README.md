@@ -1,6 +1,8 @@
 # Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines
 
-- Welcome to this comprehensive guide on automating the creation of Windows VMs with Custom (Golden) Images via Packer and Terraform through Azure DevOps CI/CD Pipelines. This Readme provides detailed instructions on the process, ensuring seamless and efficient deployment for all five applications.
+- Welcome to this comprehensive guide on automating the creation of Windows VMs with Custom (Golden) Images through Packer and Terraform, orchestrated by Azure DevOps CI/CD Pipelines. This README provides step-by-step instructions, ensuring a seamless and efficient deployment process for all five applications.
+
+Let's begin!
 
 # Let's get started!
 
@@ -13,6 +15,8 @@ Prerequisites :
 #
 
 # Repository Explanation:
+
+#### In this repository, you'll find the following components:
 
 - In the repository, I have  <a href="https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/tree/main/Terraform" target="_blank">Terraform Folder</a>  which has Terraform codes and configs.
 
@@ -29,7 +33,7 @@ Prerequisites :
 
 # Project Task and Steps:
 
-### We are going to install the following softwares & tools in the Packer image which are necessary for any Cloud & DevOps Person:
+### We aim to automate the installation of the following software and tools within the Packer image, crucial for any Cloud & DevOps professional:
 
 - Git
 - VS Code
@@ -42,7 +46,7 @@ Prerequisites :
 
 ### Step 1: Preparing the Packer Image
 
-We are going to use Builders (azure-arm) and Provisioners which we make our configurations/installations under by referencing our PS scripts.
+In this step, we utilize Packer's Builders (azure-arm) and Provisioners to configure and install software components using PowerShell scripts.
 
 ![Screenshot 2023-12-21 at 1 22 01 PM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/a200960a-4b60-4abe-9f5e-23bfe4a9154f)
 
@@ -50,7 +54,7 @@ We are going to use Builders (azure-arm) and Provisioners which we make our conf
 
 ### Step 2: Setting Up Branch Policies and Packer Pipelines
 
-As we are trying to do as close as possible to real world work environment, I set up branch policies tied to pipelines which will trigger the Packer Pipelines upon PR to main from a feature branch if there are any changes in the .json Packer files.
+To emulate real-world work environments, we establish branch policies linked to pipelines. These policies trigger Packer Pipelines upon Pull Requests (PRs) to the main branch, ensuring proper handling of changes in .json Packer files.
 
 ![Screenshot 2023-12-21 at 11 44 31 AM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/f9187cc7-b14a-4abc-a6ae-72d39d5acbfc)
 
@@ -65,7 +69,7 @@ Please see the Pipeline jobs/tasks. Image build process approximately takes 15-2
 
 ### step 3: Checking the Image
 
-Make sure to check your new custom image from Azure Portal under your RG or Images
+After the Packer image build process, it's essential to verify the newly created custom image. You can easily access it from the Azure Portal under your Resource Group (RG) or Images.
 
 ![Screenshot 2023-12-21 at 12 07 06 PM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/0e4914fe-51c1-406a-add7-5c9c3ee253d1)
 #
@@ -74,21 +78,13 @@ Make sure to check your new custom image from Azure Portal under your RG or Imag
 
 ### Step 1: Preparing Azure Resources for VM Deployment
 
-To be able to deploy a new VM, we need couple dependant resources to deploy before:
-
-- Resource Group
-- Virtual Network
-- Subnet
-- Nsg
-- Nic
-- Pip
-- NSG & SUBNET ASSOCIATION
+Before deploying a new VM, we need to configure several dependent resources, including Resource Groups, Virtual Networks, Subnets, Network Security Groups (NSG), Network Interface Cards (NIC), and Public IP addresses (Pip). Our Terraform code, structured in modules, automates this setup.
   
 ### Terraform code based on MODULE structure is ready for these reasources in the  <a href="https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/tree/main/Terraform" target="_blank">Terraform Folder</a> 
 
 ### Step 2: Branch Policies and Terraform Pipelines
 
-As we are trying to do as close as possible to real world work environment, I set up branch policies tied to pipelines which will trigger the Terraform Pipeline upon PR to main from a feature branch if there are any changes in the Terraform folder.
+To mirror real-world scenarios, branch policies tied to pipelines trigger Terraform Pipelines upon PRs to the main branch when changes occur in the Terraform folder.
 
 ![Screenshot 2023-12-21 at 11 44 31 AM copy](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/0c7152bc-2560-4a6b-8a10-5411bb55b82d)
 
@@ -110,9 +106,9 @@ This is configured in the pipeline.
 
 ### Step 3: Configuring the CD (Release) Pipeline 
 
-Once our CI pipeline is succesfuly done, our CD (Release) pipeline will be automatically triggered as we set the artifact to lates one of CI pipeline with Continuous deployment trigger enabled
+Upon successful completion of the CI pipeline, the CD (Release) pipeline activates automatically. We ensure that the latest artifact from the CI pipeline is used for continuous deployment. 
 
-#### We do Terraform Plan one more time to make sure everything is good to go! Then, as I set up pre-approval for the Terraform apply, we have to approve it and our deployment process should start :)
+#### Additionally, we conduct a Terraform Plan to validate the configuration and await approval before applying the changes.
 
 ![Screenshot 2023-12-21 at 9 21 15 AM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/6a2e2d04-57f0-4468-8d8e-6848aae42bd6)
 
@@ -120,7 +116,7 @@ Once our CI pipeline is succesfuly done, our CD (Release) pipeline will be autom
 
 ### Step 4: Terraform Apply and Resource Deployment
 
- Once Terraform Apply is done, you can kindly check them from Azure Portal
+After receiving approval, the Terraform Apply command deploys the defined resources. You can monitor the deployment's status in the Azure Portal.
 
 ![Screenshot 2023-12-21 at 1 58 53 PM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/9e2a85df-c8c6-4fe5-b1ee-cf01734f3f89)
 
@@ -128,7 +124,7 @@ Once our CI pipeline is succesfuly done, our CD (Release) pipeline will be autom
 
 ### Step 5: Connecting to the Deployed VM via RDP
 
-As the final step, we need to connect to our VM through RDP to check if our softwares/tools are properly installed.
+The final step involves connecting to the deployed VM through Remote Desktop Protocol (RDP) to verify the proper installation of software and tools.
 
 ![Screenshot 2023-12-21 at 12 33 33 PM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/a2351c28-9f94-4c73-a3be-62531128a9c9)
 
@@ -136,5 +132,6 @@ As the final step, we need to connect to our VM through RDP to check if our soft
 
 ## RESULT
 
+### With this comprehensive automation process, you can efficiently create Windows VMs from custom Packer images and deploy essential resources, all managed through Azure DevOps Pipelines.
 
 ![Screenshot 2023-12-21 at 11 35 43 AM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/db08e3ab-914e-4495-b0d9-b643539a4675)
