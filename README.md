@@ -118,7 +118,8 @@ Upon successful completion of the CI pipeline, the CD (Release) pipeline activat
 
 After receiving approval, the Terraform Apply command deploys the defined resources. You can monitor the deployment's status in the Azure Portal.
 
-![Screenshot 2023-12-21 at 1 58 53 PM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/9e2a85df-c8c6-4fe5-b1ee-cf01734f3f89)
+![Screenshot 2023-12-21 at 1 58 53 PM](https://github.com/hkaanturgut/Automating-Windows-VM-Deployment-with-Custom-Packer-Images-and-Terraform-via-Azure-DevOps-Pipelines/assets/113396342/982a81f0-0d77-4702-8e50-65705cdddefe)
+
 
 #
 
