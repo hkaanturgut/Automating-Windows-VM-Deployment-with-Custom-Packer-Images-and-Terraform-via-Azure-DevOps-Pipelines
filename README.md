@@ -67,7 +67,7 @@ Please see the Pipeline jobs/tasks. Image build process approximately takes 15-2
 
 #
 
-### step 3: Checking the Image
+### Step 3: Checking the Image
 
 After the Packer image build process, it's essential to verify the newly created custom image. You can easily access it from the Azure Portal under your Resource Group (RG) or Images.
 
