@@ -1,0 +1,33 @@
+# packer-build-pipeline.yml
+
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'  # Use an appropriate agent image
+
+stages:
+- stage: BuildPackerImage
+  jobs:
+  - job: BuildImage
+    steps:
+    - checkout: self
+
+    - script: |
+        # Install Packer (if not already installed)
+        if (Test-Path "$env:ProgramFiles\Packer\packer.exe") {
+          Write-Host "Packer is already installed."
+        } else {
+          Invoke-WebRequest -Uri "https://releases.hashicorp.com/packer/1.7.5/packer_1.7.5_windows_amd64.zip" -OutFile "$env:TEMP\packer.zip"
+          Expand-Archive -Path "$env:TEMP\packer.zip" -DestinationPath "$env:ProgramFiles\Packer" -Force
+        }
+
+        # Execute the Packer build command
+        Invoke-Expression -Command "$env:ProgramFiles\Packer\packer.exe build -var-file=windows-variables.json golden-image-windows-2019.json"
+      displayName: 'Build Packer Image'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(System.DefaultWorkingDirectory)'  # Publish the entire working directory
+        ArtifactName: 'packer-image-artifact'
+        publishLocation: 'Container'

@@ -1,0 +1,115 @@
+### DEMO ENV TERRAFORM PIPELINE
+trigger:
+  - none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: TerraformWorkflowDemo
+    displayName: 'Terraform Validation/Format'
+    jobs:
+      - job: Terraform_Install
+        displayName: 'Terraform Install'
+        steps:
+          - task: TerraformInstaller@1
+            displayName: 'Install Terraform'
+            inputs:
+              terraformVersion: 'latest'
+
+      - job: Terraform_INIT_VALIDATE
+        displayName: 'Terraform Init & Validate'
+        dependsOn: Terraform_Install
+        steps:       
+          - task: TerraformTaskV4@4
+            displayName: 'Terraform Init'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              commandOptions: '-reconfigure'
+              workingDirectory: 'Terraform'
+              backendServiceArm: ''
+              backendAzureRmResourceGroupName: 'packer-project-tf-state-rg'
+              backendAzureRmStorageAccountName: 'packerprojecttfstatesa'
+              backendAzureRmContainerName: 'terraformsf'
+              backendAzureRmKey: 'tf/terraform.tfstate'
+        
+          
+          - task: TerraformTaskV4@4
+            displayName: 'Validate Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: 'Terraform'
+              
+
+      - job: Terraform_FORMAT
+        displayName: 'Terraform Format'
+        steps:    
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'custom'
+              customCommand: 'fmt'
+              outputTo: 'console'
+              environmentServiceNameAzureRM: ''
+              
+  - stage: tfscan
+    displayName: 'Terraform Security Code Scanning'
+    jobs:
+      - job: checkov
+        continueOnError: true       # Set this to true to continue on error  
+        steps:
+          - checkout: self
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.x'
+              addToPath: true
+          - script: |
+              python -m pip install --upgrade pip
+              pip install checkov
+            displayName: 'Install Checkov'
+          - script: |
+              checkov -d .
+            displayName: 'Scan Terraform code'
+            
+  - stage: TerraformPlanDemo
+    displayName: 'Terraform Plan'
+    jobs:
+      - job: Terraform_PLAN
+        displayName: 'Terraform Plan'
+        steps:       
+          - task: TerraformTaskV4@4
+            displayName: 'Terraform Init'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              commandOptions: '-reconfigure'
+              workingDirectory: 'Terraform'
+              backendServiceArm: ''
+              backendAzureRmResourceGroupName: 'packer-project-tf-state-rg'
+              backendAzureRmStorageAccountName: 'packerprojecttfstatesa'
+              backendAzureRmContainerName: 'terraformsf'
+              backendAzureRmKey: 'tf/terraform.tfstate'
+        
+          
+          - task: TerraformTaskV4@4
+            displayName: 'Terraform Plan'
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              commandOptions: '-var-file=dev.tfvars -lock=false'
+              workingDirectory: 'Terraform'
+              environmentServiceNameAzureRM: ''
+
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Build.Repository.LocalPath)/Terraform'
+              Contents: '**/*'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/Terraform'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/Terraform'
+              ArtifactName: 'kaant-tf-plan-packer'
+              publishLocation: 'Container'

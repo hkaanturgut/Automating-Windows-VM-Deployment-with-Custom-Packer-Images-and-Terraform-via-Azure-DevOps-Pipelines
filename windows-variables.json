@@ -1,0 +1,11 @@
+{
+  "azure-subscription-id": "",
+  "azure-client-id": "",
+  "azure-client-secret": "",
+  "azure-tenant-id": "",
+
+  "azure-resource-group": "win-kaan-demo-development-packer-rg",
+  "azure-region": "canadacentral",
+
+  "vm-size": "Standard_DS1_v2"
+}
